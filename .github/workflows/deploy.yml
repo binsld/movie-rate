@@ -47,5 +47,5 @@ jobs:
 
     - name: Run new container
       run: |
-        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --name ${{ github.event.repository.name }} ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --ip ${{ env.DEPLOY_IP }} --name ${{ github.event.repository.name }} ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
         
