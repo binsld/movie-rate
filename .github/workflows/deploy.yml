@@ -42,10 +42,10 @@ jobs:
     - name: Delete old container
       continue-on-error: true
       run: |
-        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker rm -f cinema-score && sudo docker rmi -f ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker rm -f ${{ github.event.repository.name }} && sudo docker rmi -f ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
         
 
     - name: Run new container
       run: |
-        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --name cinema-score ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --name ${{ github.event.repository.name }} ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest"
         
