@@ -24,13 +24,28 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Configure SSH
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        
     - name: Build and push
       uses: docker/build-push-action@v6.18.0
       with:
         context: .
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/cinema-score:latest
-        
-    - name: Run Docker container
+
+    - name: Delete old container
+      continue-on-error: true
       run: |
-        docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "docker rmi -f cinema-score"
+        
+
+    - name: Run new container
+      run: |
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --name cinema-score ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
+        
