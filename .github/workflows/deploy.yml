@@ -41,5 +41,5 @@ jobs:
 
     - name: Run new container
       run: |
-        ssh -o StrictHostKeyChecking=no github@{{ secrets.SSH_SERVER_IP }} "docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
         
