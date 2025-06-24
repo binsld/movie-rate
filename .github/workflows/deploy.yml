@@ -42,7 +42,7 @@ jobs:
     - name: Delete old container
       continue-on-error: true
       run: |
-        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "docker rmi -f cinema-score"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker rmi -f cinema-score"
         
 
     - name: Run new container
