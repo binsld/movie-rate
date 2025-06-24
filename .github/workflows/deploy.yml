@@ -29,8 +29,8 @@ jobs:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
         mkdir -p ~/.ssh
-        chmod 600 ~/.ssh/id_rsa
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
         
     - name: Build and push
       uses: docker/build-push-action@v6.18.0
@@ -41,5 +41,5 @@ jobs:
 
     - name: Run new container
       run: |
-        ssh -o StrictHostKeyChecking=no github@{{ secrets.SSH_SERVER }} "docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
+        ssh -o StrictHostKeyChecking=no github@{{ secrets.SSH_SERVER_IP }} "docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
         
