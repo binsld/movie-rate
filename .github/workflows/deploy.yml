@@ -39,7 +39,13 @@ jobs:
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/cinema-score:latest
 
+    - name: Delete old container
+      continue-on-error: true
+      run: |
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "docker rmi -f cinema-score"
+        
+
     - name: Run new container
       run: |
-        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
+        ssh -o StrictHostKeyChecking=no github@${{ secrets.SSH_SERVER_IP }} "sudo docker run -d --name cinema-score ghcr.io/${{ github.repository_owner }}/cinema-score:latest"
         
