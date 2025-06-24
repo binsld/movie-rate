@@ -4,7 +4,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b'Hello, world!')
+        self.wfile.write(b'Other test message')
 
 
 httpd = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
