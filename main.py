@@ -1,11 +1,23 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from typing import Union
 
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b'Other test message')
+from fastapi import FastAPI
+
+app = FastAPI()
 
 
-httpd = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-httpd.serve_forever()
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app=app,
+        port=8000,
+        reload=False,
+    )
